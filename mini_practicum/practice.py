@@ -1,7 +1,7 @@
 """
 Implement your solution to the mini-practicum here.
 
-YOUR NAME HERE
+YOEL BUZGALO
 """
 
 def increasing_comparator(a, b):
@@ -10,4 +10,10 @@ def increasing_comparator(a, b):
     and False otherwise.
     """
     return a <= b
+
+def decreasing_comparator(a, b):
+    """
+    This comparator function returns True if a is greater or equal to b, and False otherwise.
+    """
+    return a >= b
 
