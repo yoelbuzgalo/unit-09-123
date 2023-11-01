@@ -1,0 +1,37 @@
+Unit 08 Practice Problems (Unit 9 Day 1 mini practicum)
+
+The goal of these "mini practica" is to give you practice with coding problems
+similar to those that you will see on the midterm practica. You will be 
+required to solve each problem with minimal assistance. You should use these
+mini-practica as an opportunity to gauge your preparedness for the exams.
+
+You should create all of your required files in this folder along with these
+instructions.
+
+Each mini-practicum counts as a homework assignment. 
+===============================================================================
+
+1. Open the "practice" module and define a function named 
+   "decreasing_comparator" that declares parameters for integer values a and b.
+   It should return True if b <= a, False otherwise. You have been provided the 
+   increasing_comparator(a,b) function, which returns True if b >= a, False 
+   otherwise.
+
+2. Define a function named "is_sorted" that declares parameters for a_list, and
+   comparator=increasing_comparator (default value). The function should return
+   True if the list is sorted depending on the comparator being used, and False 
+   otherwise. 
+
+   Test is_sorted from main using both increasing and decreasing comparators.
+   Using list1 = [20, 10, 30] and list2 = [30, 20, 10] as an example, expected
+   output of the function is as follows:
+
+   >>> is_sorted(list1) 
+   False
+   >>> is_sorted(list1, decreasing_comparator)
+   False
+   >>> is_sorted(list2, increasing_comparator)
+   False
+   >>> is_sorted(list2, decreasing_comparator)
+   True
+
