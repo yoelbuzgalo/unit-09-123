@@ -93,6 +93,15 @@ words = count_words("data/alice.txt")
 def sort_key(word):
     return words[word]
 
+def hashes():
+    print(hash("Hello World!"))
+    print(hash("Hello World!"))
+    print(hash("Hello World!"))
+    print(hash("Hello World!"))
+    print(hash("Yoel"))
+    print(hash("A"*10000))
+
+
 def main():
     sorted_words = sorted(words, key=sort_key)
     tuples = []
@@ -101,6 +110,8 @@ def main():
     sorted_words = sorted(tuples, reverse=True)
     for word in sorted_words[:20]:
         print(word[1])
+
+    hashes()
     # print(len(unique_words("data/alice.txt")))
     # an_array = timing.time_function(fill_array, 5000)
     # a_list = timing.time_function(fill_list, 5000)
