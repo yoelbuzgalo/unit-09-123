@@ -76,7 +76,31 @@ def print_dict(dict):
         value = dict[key]
         print("Key:", key, "Value:", value)
 
+def count_words(filename):
+    words_count = {}
+    with open(filename) as file:
+        for line in file:
+            words = re.findall("[A-Za-z-']+", line)
+            for word in words:
+                word.lower()
+                if word not in words_count:
+                    words_count[word] = 0
+                words_count[word] += 1
+    return words_count
+
+words = count_words("data/alice.txt")
+
+def sort_key(word):
+    return words[word]
+
 def main():
+    sorted_words = sorted(words, key=sort_key)
+    tuples = []
+    for key in words:
+        tuples.append((words[key], key))
+    sorted_words = sorted(tuples, reverse=True)
+    for word in sorted_words[:20]:
+        print(word[1])
     # print(len(unique_words("data/alice.txt")))
     # an_array = timing.time_function(fill_array, 5000)
     # a_list = timing.time_function(fill_list, 5000)
@@ -86,10 +110,10 @@ def main():
     # a_set = timing.time_function(fill_set, 5000)
     # print(a_set)
     #print(intersection({1,2,3}, {2,3,4}))
-    some_dict = {"first": 1,
-                 "another": 2
-                 }
-    print_dict(some_dict)
+    # some_dict = {"first": 1,
+    #              "another": 2
+    #              }
+    # print_dict(some_dict)
 
 if __name__ == "__main__":
     main()
