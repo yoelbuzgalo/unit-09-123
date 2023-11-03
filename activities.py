@@ -1,5 +1,6 @@
 import arrays
 import timing
+import random
 
 def unique_array(an_array, value):
     for index in range(len(an_array)):
@@ -28,9 +29,9 @@ def fill_list(length):
     return a_list
 
 def unique_set(a_set, value):
-    if value not in a_set:
-        a_set.add(value)
-    return
+    if value in a_set: 
+        return
+    a_set.add(value)
 
 def fill_set(length):
     a_set = set()
@@ -46,7 +47,6 @@ def sets():
 
     b_set = set("foo")
     print(b_set)
-
 
 def main():
     # an_array = timing.time_function(fill_array, 5000)
