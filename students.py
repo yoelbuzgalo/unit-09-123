@@ -8,16 +8,21 @@ def add_student(student_list, id, name):
             break
     student_list.append(make_student(id, name))
 
+def get_student(population, id):
+    for student in population:
+        if student[0] == id:
+            return student
+    return None
 
 def main():
     students = []
-    add_student(students, 2345, "Yoel") 
+    add_student(students, 2345, "Yoel")
+    add_student(students, 2345, "Yoel")
     add_student(students, 9999, "Seth")
     add_student(students, 2222, "Carlos")
     add_student(students, 1111, "Pramesh")
     
-    for student in students:
-        print(student)
+    print(get_student(students, 2345))
 
 if __name__ == "__main__":
     main()
