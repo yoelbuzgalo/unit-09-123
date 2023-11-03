@@ -71,6 +71,11 @@ def names():
     people["AMB"] = "Anne Marie Alden Buzgalo"
     print(people)
 
+def print_dict(dict):
+    for key in dict:
+        value = dict[key]
+        print("Key:", key, "Value:", value)
+
 def main():
     # print(len(unique_words("data/alice.txt")))
     # an_array = timing.time_function(fill_array, 5000)
@@ -80,8 +85,11 @@ def main():
     # sets()
     # a_set = timing.time_function(fill_set, 5000)
     # print(a_set)
-    # print(intersection({1,2,3}, {2,3,4}))
-    names()
+    #print(intersection({1,2,3}, {2,3,4}))
+    some_dict = {"first": 1,
+                 "another": 2
+                 }
+    print_dict(some_dict)
 
 if __name__ == "__main__":
     main()
