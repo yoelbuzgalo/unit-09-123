@@ -1,5 +1,6 @@
 import arrays
 import timing
+import re
 
 def unique_array(an_array, value):
     for index in range(len(an_array)):
@@ -47,15 +48,26 @@ def sets():
     b_set = set("foo")
     print(b_set)
 
+def unique_words(filename):
+    unique_words = set()
+    with open(filename) as file:
+        for line in file:
+            words = re.findall("[A-Za-z-']+", line)
+            for word in words:
+                unique_words.add(word.lower())
+    return unique_words
+        
+
 
 def main():
+    print(len(unique_words("data/alice.txt")))
     # an_array = timing.time_function(fill_array, 5000)
     # a_list = timing.time_function(fill_list, 5000)
     # print(an_array)
     # print(a_list)
     # sets()
-    a_set = timing.time_function(fill_set, 5000)
-    print(a_set)
+    # a_set = timing.time_function(fill_set, 5000)
+    # print(a_set)
 
 if __name__ == "__main__":
     main()
