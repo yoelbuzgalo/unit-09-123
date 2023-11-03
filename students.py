@@ -14,6 +14,16 @@ def get_student(population, id):
             return student
     return None
 
+def add_credits(population, id, credits):
+    student = get_student(population, id)
+    if student is not None:
+        student[2] += credits
+
+def get_credits(population, id):
+    student = get_student(population, id)
+    if student is not None:
+        return student[2]
+
 def main():
     students = []
     add_student(students, 2345, "Yoel")
@@ -22,7 +32,8 @@ def main():
     add_student(students, 2222, "Carlos")
     add_student(students, 1111, "Pramesh")
     
-    print(get_student(students, 2345))
+    add_credits(students, 2345, 4.0)
+    print(get_credits(students, 2345))
 
 if __name__ == "__main__":
     main()
