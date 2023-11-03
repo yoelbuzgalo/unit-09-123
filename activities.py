@@ -56,11 +56,16 @@ def unique_words(filename):
             for word in words:
                 unique_words.add(word.lower())
     return unique_words
-        
 
+def intersection(a_set, b_set):
+    intersections = set()
+    for keyword in a_set:
+        if keyword in b_set:
+            intersections.add(keyword)
+    return intersections
 
 def main():
-    print(len(unique_words("data/alice.txt")))
+    # print(len(unique_words("data/alice.txt")))
     # an_array = timing.time_function(fill_array, 5000)
     # a_list = timing.time_function(fill_list, 5000)
     # print(an_array)
@@ -68,6 +73,7 @@ def main():
     # sets()
     # a_set = timing.time_function(fill_set, 5000)
     # print(a_set)
+    print(intersection({1,2,3}, {2,3,4}))
 
 if __name__ == "__main__":
     main()
