@@ -64,6 +64,13 @@ def intersection(a_set, b_set):
             intersections.add(keyword)
     return intersections
 
+def names():
+    people = {}
+    people["YBB"] = "Yoel Baer Buzgalo"
+    people["UAB"] = "Uzi Alden Buzgalo"
+    people["AMB"] = "Anne Marie Alden Buzgalo"
+    print(people)
+
 def main():
     # print(len(unique_words("data/alice.txt")))
     # an_array = timing.time_function(fill_array, 5000)
@@ -73,7 +80,8 @@ def main():
     # sets()
     # a_set = timing.time_function(fill_set, 5000)
     # print(a_set)
-    print(intersection({1,2,3}, {2,3,4}))
+    # print(intersection({1,2,3}, {2,3,4}))
+    names()
 
 if __name__ == "__main__":
     main()
