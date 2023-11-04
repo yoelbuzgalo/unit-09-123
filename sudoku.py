@@ -27,13 +27,84 @@ def print_board(board):
 
     print(board_string)
 
+def add_random_puzzle(board, N):
+    """
+    Helper function that attempts to fill in random number between 1 to N in a Board 
+    """
+
+    for num in range(1, N+1):
+        while True:
+            i = random.randrange(0, N)
+            j = random.randrange(0, N)
+            if board[i][j] == 0:
+                board[i][j] = num
+                break
+    
+    return board
+
+def add_to_set_list(grid, list, type):
+    """
+    Helper function that iterates over a board and adds sets to a list
+    """
+    if type == "Row":
+        # Loops over rows and columns accordingly
+        for i in range(len(grid)):
+            tmp_set = set()
+            for j in range(len(grid[i])):
+                if grid[i][j] != 0:
+                    tmp_set.add(grid[i][j])
+            list.append(tmp_set)
+    elif type == "Column":
+        # Loops over columns and rows accordingly
+        for j in range(len(grid)):
+            tmp_set = set()
+            for i in range(len(grid[j])):
+                if grid[i][j] != 0:
+                    tmp_set.add(grid[i][j])
+            list.append(tmp_set)
+    return
+
+def add_reg_set_list(board, list, n):
+    """
+    Helper function that iterates over a board and adds sets to reg set list
+    """
+    # Loops over rows and columns accordingly
+    for i in range(len(board)):
+        for j in range(len(board[i])):
+            region_row = i//n # floor division to get the region row index
+            region_col = j//n # floor division to get the region column index
+            region_set = list[region_row][region_col] # Get the region index
+            if board[i][j] != 0:
+                region_set.add(board[i][j]) # Add the value to the set @ region at index
+    return
+
 def make_puzzle(N):
-    puzzle_len = int(math.sqrt(N)) # Calculate puzzle grid (n = sqrt of N)
-    puzzle_grid = [[0 for x in range(0, puzzle_len)] for y in range(0,puzzle_len)] # Create the puzzle grid
-    for i in range(0, len(puzzle_grid)):
-        j = random.randrange(0,len(puzzle_grid[i]))
-        puzzle_grid[i][j] = i
-    return puzzle_grid
+    """
+    This function makes and returns a sudoku puzzle given a NxN size.
+    """
+    board = [[0 for _ in range(N)] for _ in range(N)] # Create a board (NxN)
+
+    board = add_random_puzzle(board, N) # Calls helper function and attempts to fill ins in 1 to N at randomly
+    n = int(math.sqrt(N)) # Get region size
+
+    # Initialize set lists
+    row_sets_list = []
+    col_sets_list = []
+    reg_sets_list = [[set() for _ in range(n)] for _ in range(n)]
+
+    add_to_set_list(board, row_sets_list, "Row") # Calls helper function and appends to list
+    add_to_set_list(board, col_sets_list, "Column") # Calls helper function and appends to list
+    add_reg_set_list(board, reg_sets_list, n) # Calls helper function and updates reg_sets_list
+
+    # Create puzzle dict containing all of the informations
+    puzzle_dict = {
+        'board' : board,
+        'row_sets': row_sets_list,
+        'col_sets': col_sets_list,
+        'reg_sets': reg_sets_list
+    }
+
+    return puzzle_dict
 
 def get_square(puzzle, row, col):
     pass
@@ -45,11 +116,11 @@ def fill_puzzle(puzzle):
     pass
 
 def main():
-    N = 16
+    N = 9
     print("Board size:", N, "x", N)
     puzzle = make_puzzle(N)
-    for row in puzzle:
-        print(row)
+    print(puzzle['board'])
+    print(puzzle['reg_sets'])
     # print(puzzle)
     # print("Initial board:")
     # print_board(puzzle['board'])
