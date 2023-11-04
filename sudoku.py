@@ -121,11 +121,20 @@ def move(puzzle, row, col, new_value):
     
     check_puzzle = get_square(puzzle, row, col) # Get the relevant information at the desired square
 
-    if check_puzzle['value'] != 0:
+    board = puzzle['board'] # Get the board reference
+
+    value_is_not_zero = check_puzzle['value'] != 0
+    value_is_in_row_set = new_value in check_puzzle['row_set']
+    value_is_in_col_set = new_value in check_puzzle['col_set']
+    value_is_in_reg_set = new_value in check_puzzle['reg_set']
+
+    if value_is_not_zero:
         return False # Returns False if the square is not 0 (occupied)
 
-    if new_value in check_puzzle['row_set'] or new_value in check_puzzle['col_set'] or new_value in check_puzzle['reg_set']:
+    if value_is_in_row_set or value_is_in_col_set or value_is_in_reg_set:
         return False # Returns if the new value number exists within a row or col of that puzzle target
+
+    board[row][col] = new_value # Otherwise, assign value at the row and col
 
     return True # Returns True upon success
 
@@ -136,19 +145,19 @@ def main():
     N = 9
     print("Board size:", N, "x", N)
     puzzle = make_puzzle(N)
-    # for row in puzzle['board']:
-    #     print(row)
+    for row in puzzle['board']:
+        print(row)
+
+    square = get_square(puzzle, 0,0)
+    print(square['reg_set'])
     
-    print(puzzle)
-    
-    # if move(puzzle, 0,0, 3):
-    #     print()
-    #     print()
-    #     puzzle['board'][0][0] == 3
-    #     for row in puzzle['board']:
-    #         print(row)
-    # else:
-    #     print("Denied")
+    if move(puzzle, 0,0, 3):
+        print()
+        print()
+        for row in puzzle['board']:
+            print(row)
+    else:
+        print("Denied")
     
     # print(puzzle)
     # print("Initial board:")
