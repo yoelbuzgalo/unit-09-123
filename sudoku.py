@@ -135,11 +135,47 @@ def move(puzzle, row, col, new_value):
         return False # Returns if the new value number exists within a row or col of that puzzle target
 
     board[row][col] = new_value # Otherwise, assign value at the row and col
+    
+    # Add to sets the new value after making a move
+    check_puzzle['row_set'].add(new_value)
+    check_puzzle['col_set'].add(new_value)
+    check_puzzle['reg_set'].add(new_value)
 
     return True # Returns True upon success
 
+def check_if_full(puzzle):
+    """
+    Helper function that checks if my puzzle is 75% filled
+    """
+    N = len(puzzle['board'])
+    row_sets = puzzle['row_sets']
+    filled = 0
+
+    for row_set in row_sets: # Row sets and col sets are basically same data amount, just different grouping order - therefore we can check only one set if its greater or equal to 75%
+        filled += len(row_set)
+    
+    return filled >= 0.75*(N**2)
+
 def fill_puzzle(puzzle):
-    pass
+    """
+    This function attempts to fill in a sudoku board until it is 75% filled.
+    """
+
+    N = len(puzzle['board']) # Calculate the N size
+    attempts = 0 # start with attempt of 0
+    
+    while True:
+        attempts += 1 # for every while loop iteration, add attempt by 1
+        random_puzzle_value = random.randrange(1, (N+1)) # generate random puzzle value
+        random_row_index = random.randrange(0, N) # generate random row index between 0 to N (exclusive)
+        random_col_index = random.randrange(0, N) # generate random col index between 0 to N (exclusive)
+        move(puzzle, random_row_index, random_col_index, random_puzzle_value) # call move function and check if its valid position
+        if check_if_full(puzzle) or attempts >= (N**4):
+            break
+    
+    return
+
+    
 
 def main():
     N = 9
@@ -147,22 +183,17 @@ def main():
     puzzle = make_puzzle(N)
     for row in puzzle['board']:
         print(row)
-
-    square = get_square(puzzle, 0,0)
-    print(square['reg_set'])
+    print()
+    print()
     
-    if move(puzzle, 0,0, 3):
-        print()
-        print()
-        for row in puzzle['board']:
-            print(row)
-    else:
-        print("Denied")
+    fill_puzzle(puzzle)
+
+    for row in puzzle['board']:
+        print(row)
     
     # print(puzzle)
     # print("Initial board:")
     # print_board(puzzle['board'])
-    pass
 
      
 main()
