@@ -1,5 +1,6 @@
 import math
 import random
+import time
 
 def print_board(board):
     RED = "\033[31m"
@@ -93,6 +94,7 @@ def make_puzzle(N):
 def get_square(puzzle, row, col):
     """
     This function gets relevant information from a puzzle at a given row and col index
+    TIME COMPLEXITY: O(1)
     """
 
     # Store values from dict seperately for analysis
@@ -117,6 +119,7 @@ def get_square(puzzle, row, col):
 def move(puzzle, row, col, new_value):
     """
     This function checks if the position at row, col is empty and attempts to add a new value there without breaking the rules. Returns True if successful otherwise False.
+    TIME COMPLEXITY: O(1)
     """
     
     check_puzzle = get_square(puzzle, row, col) # Get the relevant information at the desired square
@@ -146,6 +149,17 @@ def move(puzzle, row, col, new_value):
 def check_if_full(puzzle):
     """
     Helper function that checks if my puzzle is 75% filled
+    TIME COMPLEXITY: O(N) because it is dependent on get_percent_filled function
+    """
+
+    percent = get_percent_filled(puzzle)
+    
+    return percent >= 75.0
+
+def get_percent_filled(puzzle):
+    """
+    Helper function to get the percentage of how many was filled.
+    TIME COMPLEXITY: O(N)
     """
     N = len(puzzle['board'])
     row_sets = puzzle['row_sets']
@@ -153,12 +167,16 @@ def check_if_full(puzzle):
 
     for row_set in row_sets: # Row sets and col sets are basically same data amount, just different grouping order - therefore we can check only one set if its greater or equal to 75%
         filled += len(row_set)
-    
-    return filled >= 0.75*(N**2)
+
+    percent = float(filled) / float(N**2)
+
+    return percent*100.0
+
 
 def fill_puzzle(puzzle):
     """
     This function attempts to fill in a sudoku board until it is 75% filled.
+    TIME COMPLEXITY: O(N^5) because it calls a function within a while loop that runs on N^4, whereas that function is O(N). Therefore, the total is N^4*N = N^5.
     """
 
     N = len(puzzle['board']) # Calculate the N size
@@ -178,22 +196,28 @@ def fill_puzzle(puzzle):
     
 
 def main():
-    N = 9
+    # Initialize board size param
+    N = 16
     print("Board size:", N, "x", N)
+    
+    # Create and print the board
     puzzle = make_puzzle(N)
-    for row in puzzle['board']:
-        print(row)
-    print()
-    print()
+    print_board(puzzle['board'])
     
+    # Start time counter and attempt to fill in the puzzle
+    start = time.perf_counter()
     fill_puzzle(puzzle)
-
-    for row in puzzle['board']:
-        print(row)
+    end = time.perf_counter()
     
-    # print(puzzle)
-    # print("Initial board:")
-    # print_board(puzzle['board'])
+    # Print emtpy lines
+    print() 
+    print()
+    print_board(puzzle['board'])
 
-     
+    # Print time performance
+    print(get_percent_filled(puzzle), "% of the board is filled")
+    print("Elapsed:", (end-start), "seconds")
+
 main()
+
+# ANSWERS FOR TIME COMPLEXITY: fill_puzzle() is O(N^5) and move() is O(1). See explanation to my answers inside the docstring of the functions.
