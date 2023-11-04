@@ -42,7 +42,7 @@ def add_random_puzzle(board, N):
     
     return board
 
-def add_to_set_list(grid, list, type):
+def add_to_set_list(grid, set_list, type):
     """
     Helper function that iterates over a board and adds sets to a list
     """
@@ -53,29 +53,29 @@ def add_to_set_list(grid, list, type):
             for j in range(len(grid[i])):
                 if grid[i][j] != 0:
                     tmp_set.add(grid[i][j])
-            list.append(tmp_set)
+            set_list.append(tmp_set)
     elif type == "Column":
-        # Loops over columns and rows accordingly
-        for j in range(len(grid)):
+        # Loops over columns
+        for j in range(len(grid[0])):
             tmp_set = set()
-            for i in range(len(grid[j])):
+            for i in range(len(grid)):
                 if grid[i][j] != 0:
                     tmp_set.add(grid[i][j])
-            list.append(tmp_set)
+            set_list.append(tmp_set)
     return
 
-def add_reg_set_list(board, list, n):
+def add_reg_set_list(board, set_list, n):
     """
     Helper function that iterates over a board and adds sets to reg set list
     """
     # Loops over rows and columns accordingly
     for i in range(len(board)):
         for j in range(len(board[i])):
-            region_row = i//n # floor division to get the region row index
-            region_col = j//n # floor division to get the region column index
-            region_set = list[region_row][region_col] # Get the region index
+            region_row = i//n # floor division to get the region row index in ratio (smaller set list)
+            region_col = j//n # floor division to get the region column index in ratio (smaller set list)
+            region_set = set_list[region_row][region_col] # select the set in the list passed to this at its index accordingly
             if board[i][j] != 0:
-                region_set.add(board[i][j]) # Add the value to the set @ region at index
+                region_set.add(board[i][j]) # Add the value to region set in the set list from the board
     return
 
 def make_puzzle(N):
@@ -90,7 +90,7 @@ def make_puzzle(N):
     # Initialize set lists
     row_sets_list = []
     col_sets_list = []
-    reg_sets_list = [[set() for _ in range(n)] for _ in range(n)]
+    reg_sets_list = [[set() for _ in range(n)] for _ in range(n)] # Create a list of set with smaller region
 
     add_to_set_list(board, row_sets_list, "Row") # Calls helper function and appends to list
     add_to_set_list(board, col_sets_list, "Column") # Calls helper function and appends to list
@@ -120,7 +120,7 @@ def main():
     print("Board size:", N, "x", N)
     puzzle = make_puzzle(N)
     print(puzzle['board'])
-    print(puzzle['reg_sets'])
+    print(puzzle['row_sets'])
     # print(puzzle)
     # print("Initial board:")
     # print_board(puzzle['board'])
