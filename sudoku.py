@@ -107,7 +107,28 @@ def make_puzzle(N):
     return puzzle_dict
 
 def get_square(puzzle, row, col):
-    pass
+    """
+    This function gets relevant information from a puzzle at a given row and col index
+    """
+
+    # Store values from dict seperately for analysis
+    puzzle_board = puzzle['board']
+    puzzle_row_sets = puzzle['row_sets']
+    puzzle_col_sets = puzzle['col_sets']
+    puzzle_reg_sets = puzzle['reg_sets']
+    n = int(math.sqrt(len(puzzle_board))) # Get the smaller n size for region set
+
+    value = puzzle_board[row][col]
+    row_set = puzzle_row_sets[row]
+    col_set = puzzle_col_sets[col]
+    reg_set = puzzle_reg_sets[row//n][col//n] # Region size is always smaller in ratio, divide by floor division with n
+
+    return {
+        'value': value,
+        'row_set': row_set,
+        'col_set': col_set,
+        'reg_set': reg_set,
+    } # Return as a dict of relevant information
 
 def move(puzzle, row, col, new_value):
     pass
@@ -119,8 +140,11 @@ def main():
     N = 9
     print("Board size:", N, "x", N)
     puzzle = make_puzzle(N)
-    print(puzzle['board'])
-    print(puzzle['row_sets'])
+    for row in puzzle['board']:
+        print(row)
+    
+    print(get_square(puzzle, 0,0))
+    
     # print(puzzle)
     # print("Initial board:")
     # print_board(puzzle['board'])
