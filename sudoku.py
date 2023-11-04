@@ -42,40 +42,26 @@ def add_random_puzzle(board, N):
     
     return board
 
-def add_to_set_list(grid, set_list, type):
+def add_to_set_list(grid, row_set_list, col_set_list, reg_set_list):
     """
     Helper function that iterates over a board and adds sets to a list
     """
-    if type == "Row":
-        # Loops over rows and columns accordingly
-        for i in range(len(grid)):
-            tmp_set = set()
-            for j in range(len(grid[i])):
-                if grid[i][j] != 0:
-                    tmp_set.add(grid[i][j])
-            set_list.append(tmp_set)
-    elif type == "Column":
-        # Loops over columns
-        for j in range(len(grid[0])):
-            tmp_set = set()
-            for i in range(len(grid)):
-                if grid[i][j] != 0:
-                    tmp_set.add(grid[i][j])
-            set_list.append(tmp_set)
-    return
+    n = int(math.sqrt(len(grid)))
 
-def add_reg_set_list(board, set_list, n):
-    """
-    Helper function that iterates over a board and adds sets to reg set list
-    """
-    # Loops over rows and columns accordingly
-    for i in range(len(board)):
-        for j in range(len(board[i])):
-            region_row = i//n # floor division to get the region row index in ratio (smaller set list)
-            region_col = j//n # floor division to get the region column index in ratio (smaller set list)
-            region_set = set_list[region_row][region_col] # select the set in the list passed to this at its index accordingly
-            if board[i][j] != 0:
-                region_set.add(board[i][j]) # Add the value to region set in the set list from the board
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            value = grid[i][j]
+            if value != 0:
+                # Adds values in order based on row/column index
+                row_set_list[i].add(value)
+                col_set_list[j].add(value)
+
+                # Calculate region index
+                region_row = i//n
+                region_col = j//n
+
+                # Add values to the list of region set
+                reg_set_list[region_row][region_col].add(value)
     return
 
 def make_puzzle(N):
@@ -88,13 +74,11 @@ def make_puzzle(N):
     n = int(math.sqrt(N)) # Get region size
 
     # Initialize set lists
-    row_sets_list = []
-    col_sets_list = []
+    row_sets_list = [set() for _ in range(N)]
+    col_sets_list = [set() for _ in range(N)]
     reg_sets_list = [[set() for _ in range(n)] for _ in range(n)] # Create a list of set with smaller region
 
-    add_to_set_list(board, row_sets_list, "Row") # Calls helper function and appends to list
-    add_to_set_list(board, col_sets_list, "Column") # Calls helper function and appends to list
-    add_reg_set_list(board, reg_sets_list, n) # Calls helper function and updates reg_sets_list
+    add_to_set_list(board, row_sets_list, col_sets_list, reg_sets_list) # Calls helper function and appends to list
 
     # Create puzzle dict containing all of the informations
     puzzle_dict = {
@@ -131,7 +115,19 @@ def get_square(puzzle, row, col):
     } # Return as a dict of relevant information
 
 def move(puzzle, row, col, new_value):
-    pass
+    """
+    This function checks if the position at row, col is empty and attempts to add a new value there without breaking the rules. Returns True if successful otherwise False.
+    """
+    
+    check_puzzle = get_square(puzzle, row, col) # Get the relevant information at the desired square
+
+    if check_puzzle['value'] != 0:
+        return False # Returns False if the square is not 0 (occupied)
+
+    if new_value in check_puzzle['row_set'] or new_value in check_puzzle['col_set'] or new_value in check_puzzle['reg_set']:
+        return False # Returns if the new value number exists within a row or col of that puzzle target
+
+    return True # Returns True upon success
 
 def fill_puzzle(puzzle):
     pass
@@ -140,10 +136,19 @@ def main():
     N = 9
     print("Board size:", N, "x", N)
     puzzle = make_puzzle(N)
-    for row in puzzle['board']:
-        print(row)
+    # for row in puzzle['board']:
+    #     print(row)
     
-    print(get_square(puzzle, 0,0))
+    print(puzzle)
+    
+    # if move(puzzle, 0,0, 3):
+    #     print()
+    #     print()
+    #     puzzle['board'][0][0] == 3
+    #     for row in puzzle['board']:
+    #         print(row)
+    # else:
+    #     print("Denied")
     
     # print(puzzle)
     # print("Initial board:")
