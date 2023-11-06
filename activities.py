@@ -1,6 +1,7 @@
 import arrays
 import timing
 import re
+import random
 
 def unique_array(an_array, value):
     for index in range(len(an_array)):
@@ -29,9 +30,9 @@ def fill_list(length):
     return a_list
 
 def unique_set(a_set, value):
-    if value not in a_set:
-        a_set.add(value)
-    return
+    if value in a_set: 
+        return
+    a_set.add(value)
 
 def fill_set(length):
     a_set = set()
@@ -90,6 +91,21 @@ def count_words(filename):
 
 words = count_words("data/alice.txt")
 
+def collisions(filename, length, hash_func=hash):
+    an_array = arrays.Array(length, None)
+    count = 0
+    with open(filename) as file:
+        for line in file:
+            line = line.strip()
+            if len(line) != 0:
+                hash_code = hash(line)
+                if an_array[hash_code % len(an_array)] == None:
+                    an_array[hash_code % len(an_array)] = line
+                    count += 1
+                else:
+                    return count
+    return count
+
 def sort_key(word):
     return words[word]
 
@@ -101,17 +117,21 @@ def hashes():
     print(hash("Yoel"))
     print(hash("A"*10000))
 
+def make_myset(length, hash_func=hash):
+    table = [[] for _ in range(length)]
+    return (hash_func, table)
+
 
 def main():
-    sorted_words = sorted(words, key=sort_key)
-    tuples = []
-    for key in words:
-        tuples.append((words[key], key))
-    sorted_words = sorted(tuples, reverse=True)
-    for word in sorted_words[:20]:
-        print(word[1])
-
-    hashes()
+    # print(collisions("data/alice.txt", 100))
+    # sorted_words = sorted(words, key=sort_key)
+    # tuples = []
+    # for key in words:
+    #     tuples.append((words[key], key))
+    # sorted_words = sorted(tuples, reverse=True)
+    # for word in sorted_words[:20]:
+    #     print(word[1])
+    # hashes()
     # print(len(unique_words("data/alice.txt")))
     # an_array = timing.time_function(fill_array, 5000)
     # a_list = timing.time_function(fill_list, 5000)
@@ -125,6 +145,9 @@ def main():
     #              "another": 2
     #              }
     # print_dict(some_dict)
+
+    a_set = make_myset(10)
+    print(a_set)
 
 if __name__ == "__main__":
     main()
