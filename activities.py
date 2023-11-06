@@ -140,9 +140,7 @@ def main():
     #              "another": 2
     #              }
     # print_dict(some_dict)
-
-    a_set = make_myset(10)
-    print(a_set)
+    pass
 
 if __name__ == "__main__":
     main()

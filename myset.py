@@ -4,12 +4,17 @@ def make_myset(length, hash_func=hash):
 
 def add(myset, element):
     hash_func, table = myset
-    length = len(table)
     hash_code = hash_func(element)
     index = hash_code % len(table)
     # check if already exists
     if element not in table[index]:
         table[index].append(element)
+
+def contains(myset, element):
+    hash_func, table = myset
+    hash_code = hash_func(element)
+    index = hash_code % len(table)
+    return element in table[index]
 
 
 def main():
@@ -21,5 +26,8 @@ def main():
     print(a_set)
     add(a_set, "Three")
     print(a_set)
+
+    print(contains(a_set, "One"))
+    print(contains(a_set, "Two"))
 
 main()
