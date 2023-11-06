@@ -117,11 +117,6 @@ def hashes():
     print(hash("Yoel"))
     print(hash("A"*10000))
 
-def make_myset(length, hash_func=hash):
-    table = [[] for _ in range(length)]
-    return (hash_func, table)
-
-
 def main():
     # print(collisions("data/alice.txt", 100))
     # sorted_words = sorted(words, key=sort_key)
