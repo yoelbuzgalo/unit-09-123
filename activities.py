@@ -126,7 +126,7 @@ def string_hash(a_string):
     for character in a_string:
         if ord(character) > largest:
             largest = ord(character)
-    return largest
+    return largest * len(a_string)
 
 def main():
     # print(collisions("data/alice.txt", 100))
