@@ -121,6 +121,13 @@ def hashes():
     print(hash("Yoel"))
     print(hash("A"*10000))
 
+def string_hash(a_string):
+    largest = 0
+    for character in a_string:
+        if ord(character) > largest:
+            largest = ord(character)
+    return largest
+
 def main():
     # print(collisions("data/alice.txt", 100))
     # sorted_words = sorted(words, key=sort_key)
@@ -144,7 +151,10 @@ def main():
     #              "another": 2
     #              }
     # print_dict(some_dict)
-    ascii_codes("Yoel")
+    # ascii_codes("Yoel")
+    # print(string_hash("Yoel"))
+    # print(string_hash("oeYl"))
+    print(collisions("data/alice.txt", 1000, string_hash))
 
 if __name__ == "__main__":
     main()
