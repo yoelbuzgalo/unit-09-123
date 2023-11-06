@@ -98,7 +98,7 @@ def collisions(filename, length, hash_func=hash):
         for line in file:
             line = line.strip()
             if len(line) != 0:
-                hash_code = hash(line)
+                hash_code = hash_func(line)
                 if an_array[hash_code % len(an_array)] == None:
                     an_array[hash_code % len(an_array)] = line
                     count += 1
@@ -108,6 +108,10 @@ def collisions(filename, length, hash_func=hash):
 
 def sort_key(word):
     return words[word]
+
+def ascii_codes(a_string):
+    for character in a_string:
+        print(character,":", str(ord(character)))
 
 def hashes():
     print(hash("Hello World!"))
@@ -140,7 +144,7 @@ def main():
     #              "another": 2
     #              }
     # print_dict(some_dict)
-    pass
+    ascii_codes("Yoel")
 
 if __name__ == "__main__":
     main()
