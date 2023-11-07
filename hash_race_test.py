@@ -43,3 +43,36 @@ def test_hash_sum_empty():
 
     # Analysis
     assert result == expected
+
+def test_hash_positional_empty():
+    # Setup
+    x = ""
+    expected = 0
+
+    # Invoke
+    result = hash_race.hash_positional_sum(x)
+
+    # Analysis
+    assert result == expected
+
+def test_hash_positional_sum_abcd():
+    # Setup
+    x = "abcd"
+    expected = 2987074
+
+    # Invoke
+    result = hash_race.hash_positional_sum(x)
+
+    # Analysis
+    assert result == expected
+
+def test_hash_positional_sum_bdca():
+    # Setup
+    x = "bdca"
+    expected = 3018784
+
+    # Invoke
+    result = hash_race.hash_positional_sum(x)
+
+    # Analysis
+    assert result == expected
