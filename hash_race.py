@@ -58,14 +58,43 @@ def build_collision_counter(hash_func):
             else:
                 dict_of_hash[hash_code] = 1
     return dict_of_hash # Return the dict
+
+def hash_test(hash_func, collision_counter):
+    """
+    This function tests the quality of a given hash function passed to this function
+    """
+
+    # Print the name of hash function passed for testing
+    print("hash function:", hash_func.__name__)
+    collision_dict = collision_counter(hash_func) # Initialize the collission count variable and call the collision counter function with the hash function, gets the dict stored
+    
+    total_input = len(collision_dict) # Returns how many keys were created in dictionary (total hash input)
+
+    # Initialize count and max variables
+    total_collission_count = 0
+    max_collission = 0
+
+    # Loops over every hash key in collission dict and retrieves values
+    for hash_key in collision_dict:
+        total_collission_count += (collision_dict[hash_key] - 1) # Updates total collission count
         
+        # Checks if the current collision is higher than previous max collission, if so - updates it
+        if collision_dict[hash_key] > max_collission: 
+            max_collission = collision_dict[hash_key]
+    
+    total_collission_rate = round((100 * float(total_collission_count)/float(total_input)), 2) # Gets the percentage based on ratio and rounds to 2 decimals
+
+    print("Total collission rate: ", total_collission_rate, "%", sep="") # Prints the total collission rate percentage
+    print("Maximum collisions:", max_collission)
+
 
 def main():
     # some_string = "abc"
     # print(hash_sum(some_string))
     # print(hash_positional_sum("abcd"))
     # print(hash_positional_sum("bdca"))
-    print(build_collision_counter(hash_positional_sum))
+    # print(build_collision_counter(hash_positional_sum))
+    hash_test(hash_positional_sum, build_collision_counter)
 
 if __name__ == "__main__":
     main()
