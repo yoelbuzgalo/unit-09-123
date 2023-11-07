@@ -1,3 +1,5 @@
+import time
+
 def hash_first_char(a_string):
     """
     This returns an ASCII value of the first character in the string.
@@ -46,18 +48,32 @@ def build_collision_counter(hash_func):
     """
     # Initialize a dict
     dict_of_hash = dict()
+    number_of_lines = 0
 
     # Opens the file
     with open("data/long_line_words.txt") as file:
         # Loop through every line in file
         for line in file:
+            number_of_lines += 1
             line = line.strip() # Strip for trailing/whitespaces
             hash_code = hash_func(line) # Convert every line with a hash function
             if hash_code in dict_of_hash: # Check if it exists in dict, if it does - add by 1, otherwise create a key of it
                 dict_of_hash[hash_code] += 1
             else:
                 dict_of_hash[hash_code] = 1
-    return dict_of_hash # Return the dict
+    return dict_of_hash, number_of_lines # Return the dict and number of lines attempted to create key and value pairs.
+
+def get_perf_time(func, *args):
+    """
+    Helper function that retrieves performance time and also returns the functions' returned value
+    """
+    start = time.perf_counter() # Get starting time
+    value = func(*args) # Call the function, pass any arguments
+    end = time.perf_counter() # Get end time
+
+    elapsed = end - start # Calculate the elapsed time
+    
+    return value, elapsed # Return both values
 
 def hash_test(hash_func, collision_counter):
     """
@@ -66,26 +82,32 @@ def hash_test(hash_func, collision_counter):
 
     # Print the name of hash function passed for testing
     print("hash function:", hash_func.__name__)
-    collision_dict = collision_counter(hash_func) # Initialize the collission count variable and call the collision counter function with the hash function, gets the dict stored
+    collission_counter_value, elapsed_time = get_perf_time(collision_counter, hash_func) # Calls a helper function w/ the collision counter function and the hash function.
     
-    total_input = len(collision_dict) # Returns how many keys were created in dictionary (total hash input)
+    collision_dict, number_of_lines = collission_counter_value # Unpack the returned value
+
+    total_hash_keys = len(collision_dict) # Returns how many keys were created in dictionary (total hash output)
 
     # Initialize count and max variables
     total_collission_count = 0
     max_collission = 0
 
-    # Loops over every hash key in collission dict and retrieves values
+    # Loops over every hash key in collission dict and retrieves values (collision count)
     for hash_key in collision_dict:
         total_collission_count += (collision_dict[hash_key] - 1) # Updates total collission count
-        
-        # Checks if the current collision is higher than previous max collission, if so - updates it
-        if collision_dict[hash_key] > max_collission: 
-            max_collission = collision_dict[hash_key]
-    
-    total_collission_rate = round((100 * float(total_collission_count)/float(total_input)), 2) # Gets the percentage based on ratio and rounds to 2 decimals
 
-    print("Total collission rate: ", total_collission_rate, "%", sep="") # Prints the total collission rate percentage
-    print("Maximum collisions:", max_collission)
+        # Checks if the current collision is higher than previous max collission, if so - updates it
+        if (collision_dict[hash_key] - 1) > max_collission: 
+            max_collission = (collision_dict[hash_key] - 1)
+    
+    total_collission_rate = round((100 * (float(total_collission_count)/float(total_hash_keys))), 2) # Gets the percentage based on ratio and rounds to 2 decimals
+    spread_rate = round((100 * (float(total_hash_keys)/float(number_of_lines))), 2) # Gets the spread rate percentage based on ratio of hash key outputs to the amount of lines.
+
+    # Print calculated values
+    print("total collission rate: ", total_collission_rate, "%", sep="")
+    print("maximum collisions:", max_collission)
+    print("spread: ", spread_rate, "%", sep="")
+    print("speed:", round(elapsed_time, 2), "seconds", end="\n\n")
 
 
 def main():
@@ -94,7 +116,11 @@ def main():
     # print(hash_positional_sum("abcd"))
     # print(hash_positional_sum("bdca"))
     # print(build_collision_counter(hash_positional_sum))
+    hash_test(hash, build_collision_counter)
+    hash_test(hash_first_char, build_collision_counter)
+    hash_test(hash_sum, build_collision_counter)
     hash_test(hash_positional_sum, build_collision_counter)
+    
 
 if __name__ == "__main__":
     main()
