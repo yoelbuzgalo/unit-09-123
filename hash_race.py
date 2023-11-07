@@ -40,12 +40,32 @@ def hash_positional_sum(a_string):
     
     return sum
 
+def build_collision_counter(hash_func):
+    """
+    This function loops over a file, hashes every line and adds to dictionary with with a count of how many hash collissions
+    """
+    # Initialize a dict
+    dict_of_hash = dict()
+
+    # Opens the file
+    with open("data/long_line_words.txt") as file:
+        # Loop through every line in file
+        for line in file:
+            line = line.strip() # Strip for trailing/whitespaces
+            hash_code = hash_func(line) # Convert every line with a hash function
+            if hash_code in dict_of_hash: # Check if it exists in dict, if it does - add by 1, otherwise create a key of it
+                dict_of_hash[hash_code] += 1
+            else:
+                dict_of_hash[hash_code] = 1
+    return dict_of_hash # Return the dict
+        
 
 def main():
     # some_string = "abc"
     # print(hash_sum(some_string))
-    print(hash_positional_sum("abcd"))
-    print(hash_positional_sum("bdca"))
+    # print(hash_positional_sum("abcd"))
+    # print(hash_positional_sum("bdca"))
+    print(build_collision_counter(hash_positional_sum))
 
 if __name__ == "__main__":
     main()
