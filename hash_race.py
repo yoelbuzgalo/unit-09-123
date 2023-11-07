@@ -30,7 +30,7 @@ def hash_positional_sum(a_string):
     if len(a_string) == 0:
         return 0
 
-    # 
+    # Loops every character and creates adds to sum w/ hash value based on position and exponents of each letter in string
     sum = 0
     for i in range(len(a_string)):
         # Formula taken from the instruction
