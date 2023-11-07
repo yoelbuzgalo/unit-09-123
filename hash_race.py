@@ -27,18 +27,10 @@ def hash_sum(a_string):
     return sum
 
 def hash_positional_sum(a_string):
-    
-    # Guard clause to check if the string is empty, it will return 0 immediately if it is empty
-    if len(a_string) == 0:
-        return 0
-
     # Loops every character and creates adds to sum w/ hash value based on position and exponents of each letter in string
     sum = 0
     for i in range(len(a_string)):
-        # Formula taken from the instruction
-        exponent = len(a_string)-(i+1) # Exponent value (positional)
-        ascii_val = ord(a_string[i]) # Convert iterated character to ascii value
-        sum += (ascii_val*(31**exponent)) # Multiply and update for every iteration to the sum variable
+        sum += ord(a_string[i])*(i**2) # Multiply and update for every iteration to the sum variable
     
     return sum
 
