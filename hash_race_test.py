@@ -21,3 +21,25 @@ def test_hash_first_char_empty():
 
     # Analysis
     assert result == expected
+
+def test_hash_sum_abc():
+    # Setup
+    x = "abc"
+    expected = 294 # 97+98+99 (from ASCII table)
+
+    # Invoke
+    result = hash_race.hash_sum(x)
+
+    # Analysis
+    assert result == expected
+
+def test_hash_sum_empty():
+    # Setup
+    x = ""
+    expected = 0
+
+    # Invoke
+    result = hash_race.hash_sum(x)
+
+    # Analysis
+    assert result == expected
